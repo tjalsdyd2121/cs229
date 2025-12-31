@@ -25,7 +25,7 @@ def main(train_path, eval_path, pred_path):
     # prediction
     y_pred = logReg_Netwon.predict(x_eval)
     np.savetxt(pred_path, y_pred > 0.5, fmt='%d')
-
+    print("accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
 
 
     # *** END CODE HERE ***
@@ -68,7 +68,6 @@ class LogisticRegression(LinearModel):
             pre_theta = np.copy(self.theta) 
             # by definition of logistic regression
             h_x =  1 / (1 + np.exp(-x.dot(self.theta)))
-            # here, h_x is n dimension vector.
             # hessain and gradient we found as (a)
             gradient = x.T.dot(h_x - y)/ n
             H = (x.T * h_x * (1 - h_x)).dot(x) / n

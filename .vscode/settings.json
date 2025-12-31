@@ -7,5 +7,7 @@
     "editor.semanticHighlighting.enabled": true,
     "workbench.colorTheme": "Default Dark+",
     "editor.tokenColorCustomizations": {},
-    "editor.semanticTokenColorCustomizations": {}
+    "editor.semanticTokenColorCustomizations": {},
+    "python.defaultInterpreterPath": "/opt/conda/envs/cs229/bin/python"
+
 }
