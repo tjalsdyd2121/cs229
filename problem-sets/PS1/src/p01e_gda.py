@@ -14,8 +14,20 @@ def main(train_path, eval_path, pred_path):
     """
     # Load dataset
     x_train, y_train = util.load_dataset(train_path, add_intercept=False)
-
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
+    
+    
     # *** START CODE HERE ***
+    model = GDA()
+    model.fit(x_train,y_train)
+
+    # plot the data and model
+    util.plot(x_train, y_train, model.theta, 'output/p01e_{}.png'.format(pred_path[-5]))
+
+    # prediction
+    y_pred = model.predict(x_eval)
+    np.savetxt(pred_path, y_pred > 0.5, fmt='%d')
+    print("accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
     # *** END CODE HERE ***
 
 
@@ -39,6 +51,19 @@ class GDA(LinearModel):
             theta: GDA model parameters.
         """
         # *** START CODE HERE ***
+        n,d = x.shape
+        # useful lang... python...!!
+        y_1 = sum(y == 1)
+        phi = y_1 / n
+        mu_0 = np.sum(x[y == 0], axis=0) / (n - y_1)
+        mu_1 = np.sum(x[y == 1], axis=0) / y_1
+        sigma = ((x[y == 0] - mu_0).T.dot(x[y == 0] - mu_0) + (x[y == 1] - mu_1).T.dot(x[y == 1] - mu_1)) / n
+
+        # from (c)
+        self.theta = np.zeros(d+1)
+        self.theta[0] = mu_0.T.dot(np.linalg.inv(sigma)).dot(mu_0) - mu_1.T.dot(np.linalg.inv(sigma)).dot(mu_1) - np.log((1-phi)/phi)
+        self.theta[1:] = np.linalg.inv(sigma).dot(mu_1-mu_0)
+
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -51,4 +76,5 @@ class GDA(LinearModel):
             Outputs of shape (m,).
         """
         # *** START CODE HERE ***
+        return 1 / (1 + np.exp(-x.dot(self.theta)))
         # *** END CODE HERE
