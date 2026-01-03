@@ -43,6 +43,12 @@ def main(train_path, eval_path, pred_path):
     #plt.legend(loc="upper left")
     plt.savefig('output/p01h_{}.png'.format(pred_path[-5]))
 
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
+    x_eval_trans = np.append(x_eval[:,0:2], np.log(x_eval[:,2:3]), axis=1)
+    y_pred = t_gda.predict(x_eval_trans)
+    np.savetxt(pred_path, y_pred > 0.5, fmt='%d')
+    print("transformed gda accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
+
 
     
 

@@ -30,7 +30,7 @@ def main(train_path, eval_path, pred_path):
     x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
     y_pred = model.predict(x_eval)
     np.savetxt(pred_path, y_pred > 0.5, fmt='%d')
-    print("accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
+    print("gda accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
     # *** END CODE HERE ***
 
 

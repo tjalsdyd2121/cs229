@@ -25,7 +25,7 @@ def main(train_path, eval_path, pred_path):
     # prediction
     y_pred = logReg_Netwon.predict(x_eval)
     np.savetxt(pred_path, y_pred > 0.5, fmt='%d')
-    print("accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
+    print("LR accuracy: {}".format(np.mean((y_pred > 0.5) == y_eval)))
 
 
     # *** END CODE HERE ***
