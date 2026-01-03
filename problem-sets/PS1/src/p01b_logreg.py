@@ -72,7 +72,7 @@ class LogisticRegression(LinearModel):
             gradient = x.T.dot(h_x - y)/ n
             H = (x.T * h_x * (1 - h_x)).dot(x) / n
             # update the theta
-            self.theta -= np.linalg.inv(H).dot(gradient)
+            self.theta -=  self.step_size * np.linalg.inv(H).dot(gradient)
 
             # break condition
             if np.linalg.norm(self.theta - pre_theta, ord=2) < self.eps:
